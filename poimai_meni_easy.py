@@ -13,7 +13,7 @@ pacman = sprite.add("pacman", 200, 300, "player2")
 sprite.set_size(pacman, 50, 50)
 
 # Создаем привидение
-fantom = sprite.add("pacman", 600, 325, "enemy_ill_blue1")
+fantom = sprite.add("privedenie", 600, 325, "enemy_ill_blue1")
 sprite.set_size(fantom, 40, 40)
 
 
@@ -37,8 +37,8 @@ def top_stop():
 
 def bottom_stop():
     bottom_fantom = sprite.get_bottom(fantom)
-    if bottom_fantom > 630:
-        sprite.move_to(fantom, sprite.get_x(fantom), 630)
+    if bottom_fantom > 650:
+        sprite.move_bottom_to(fantom, 650)
 
 
 def left_stop():
@@ -64,17 +64,18 @@ def move_prizrak(pos_x, pos_y):
 
 @wrap.always(50)
 def move_pacman():
-    if sprite.is_visible(fantom) == True:
+    if sprite.get_costume(fantom) == "enemy_ill_blue1":
         sprite.move_at_angle_dir(pacman, 12)
         sprite.set_angle_to_point(pacman, sprite.get_x(fantom), sprite.get_y(fantom))
 
 
 @wrap.on_key_down(wrap.K_t)
 def invisible_true():
-    sprite.hide(fantom)
+    sprite.set_costume(fantom,"enemy_inv")
+
 
 
 @wrap.always
 def proverka_invisible():
-    if sprite.is_visible(fantom) == False:
+    if sprite.get_costume(fantom) == "enemy_inv":
         print("Сама скрытность")
