@@ -5,16 +5,21 @@ from wrap import world, sprite, sprite_text, actions
 
 wrap.add_sprite_dir("my_sprite")
 world.create_world(1200, 650)
-fon_sprite = sprite.add("fon", 700, 325)
+fon_sprite = sprite.add("fon", 700, 325, "fon_pacman2")
 sprite.set_width_proportionally(fon_sprite, 1400)
 
 # Cоздаем пакмена
-pacman = sprite.add("pacman", 200, 300, "player2")
+pacman = sprite.add("pacman", 100, 325, "player2")
 sprite.set_size(pacman, 50, 50)
 
 # Создаем привидение
-fantom = sprite.add("privedenie", 600, 325, "enemy_ill_blue1")
+fantom = sprite.add("privedenie", 1100, 325, "enemy_ill_blue1")
 sprite.set_size(fantom, 40, 40)
+
+# Создаем сердца
+life_fantom1 = sprite.add("heart", 1170, 30)
+life_fantom2 = sprite.add("heart", 1130, 30)
+life_fantom3 = sprite.add("heart", 1090, 30)
 
 
 @wrap.on_key_always(wrap.K_RIGHT, delay=15)
@@ -71,11 +76,13 @@ def move_pacman():
 
 @wrap.on_key_down(wrap.K_t)
 def invisible_true():
-    sprite.set_costume(fantom,"enemy_inv")
-
+    sprite.set_costume(fantom, "enemy_inv")
 
 
 @wrap.always
 def proverka_invisible():
     if sprite.get_costume(fantom) == "enemy_inv":
-        print("Сама скрытность")
+        vremi = time.time()
+        time_invisible = time.time() - vremi
+        time_invisible = int(time_invisible)
+        print(time_invisible)
