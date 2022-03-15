@@ -78,11 +78,14 @@ def move_pacman():
 def invisible_true():
     sprite.set_costume(fantom, "enemy_inv")
 
-
+vremi = time.time()
 @wrap.always
 def proverka_invisible():
-    if sprite.get_costume(fantom) == "enemy_inv":
-        vremi = time.time()
-        time_invisible = time.time() - vremi
-        time_invisible = int(time_invisible)
-        print(time_invisible)
+    time_invisible = time.time() - vremi
+    time_invisible = int(time_invisible)
+    print(time_invisible)
+    # if sprite.get_costume(fantom) == "enemy_inv":
+    #     vremi = time.time()
+    #     time_invisible = time.time() - vremi
+    #     time_invisible = int(time_invisible)
+    #     print(time_invisible)
