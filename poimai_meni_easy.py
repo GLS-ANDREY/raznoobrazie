@@ -7,6 +7,7 @@ wrap.add_sprite_dir("my_sprite")
 world.create_world(1200, 650)
 fon_sprite = sprite.add("fon", 700, 325, "fon_pacman2")
 sprite.set_width_proportionally(fon_sprite, 1400)
+vremi = time.time()
 
 # Cоздаем пакмена
 pacman = sprite.add("pacman", 100, 325, "player2")
@@ -21,6 +22,11 @@ life_fantom1 = sprite.add("heart", 1170, 30)
 life_fantom2 = sprite.add("heart", 1130, 30)
 life_fantom3 = sprite.add("heart", 1090, 30)
 
+
+# @wrap.always
+# def global_vremi():
+#     if sprite.get_costume(fantom) == "enemy_inv":
+#         vremi = time.time()
 
 @wrap.on_key_always(wrap.K_RIGHT, delay=15)
 def povorot_right():
@@ -76,16 +82,14 @@ def move_pacman():
 
 @wrap.on_key_down(wrap.K_t)
 def invisible_true():
+    global vremi
     sprite.set_costume(fantom, "enemy_inv")
+    vremi = time.time()
 
-vremi = time.time()
+
 @wrap.always
 def proverka_invisible():
-    time_invisible = time.time() - vremi
-    time_invisible = int(time_invisible)
-    print(time_invisible)
-    # if sprite.get_costume(fantom) == "enemy_inv":
-    #     vremi = time.time()
-    #     time_invisible = time.time() - vremi
-    #     time_invisible = int(time_invisible)
-    #     print(time_invisible)
+    if sprite.get_costume(fantom) == "enemy_inv":
+        time_invisible = time.time() - vremi
+        if time_invisible > 3.0:
+            sprite.set_costume(fantom, "enemy_ill_blue1")
