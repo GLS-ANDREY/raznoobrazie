@@ -1,7 +1,7 @@
 import time
 
 import wrap
-from wrap import world, sprite, sprite_text, actions
+from wrap import world, sprite, sprite_text
 
 wrap.add_sprite_dir("my_sprite")
 world.create_world(1200, 650)
@@ -22,11 +22,20 @@ life_fantom1 = sprite.add("heart", 1170, 30)
 life_fantom2 = sprite.add("heart", 1130, 30)
 life_fantom3 = sprite.add("heart", 1090, 30)
 
+#Делаем таймер
+chasi = time.time()
+text = time.time() - chasi
+text = int(text)
+text = str(text)
+text2 = sprite.add_text(text, 1055, 30)
 
-# @wrap.always
-# def global_vremi():
-#     if sprite.get_costume(fantom) == "enemy_inv":
-#         vremi = time.time()
+#Делаем таймер для способности
+chasi_skill = time.time()
+text_skill = time.time() - chasi
+text_skill = int(text)
+text_skill = str(text)
+text2_skill = sprite.add_text(text, 1055, 30)
+
 
 @wrap.on_key_always(wrap.K_RIGHT, delay=15)
 def povorot_right():
@@ -92,4 +101,28 @@ def proverka_invisible():
     if sprite.get_costume(fantom) == "enemy_inv":
         time_invisible = time.time() - vremi
         if time_invisible > 3.0:
-            sprite.set_costume(fantom, "enemy_ill_blue1")
+            sprite.set_costume(fantom, "enemy_ill_blue1")  #<- Фантом выходит из невидимости
+
+
+@wrap.always
+def taimer():
+    text = time.time() - chasi
+    text = int(text)
+    text = str(text)
+    sprite_text.set_text(text2, text)
+
+@wrap.always
+def taimer_skill():
+    pass
+
+# Нужен таймер в обратную сторону
+# №1 Таймер который ведёт обратный отсчет от 20 до 0.
+# №2 Отсчёт должен начинаться когда Фантом вышел из невидимости.
+
+###Состояния таймера
+# Таймер в начале стоит на месте.
+##Собятие Фантои вышел из невидимости
+# Таймер ведёт отсчёт от 20 до 0
+##Событие Таймер досчитал до цифры 0
+# Таймер стоит
+
