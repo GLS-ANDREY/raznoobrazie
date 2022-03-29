@@ -26,6 +26,8 @@ text = time.time() - chasi
 text = int(text)
 text = str(text)
 text2 = sprite.add_text(text, 350, 50)
+
+
 posledniy_vistrel = time.time()
 while 1 == 1:
     text = time.time() - chasi

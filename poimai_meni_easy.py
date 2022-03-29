@@ -34,7 +34,7 @@ chasi_skill = time.time()
 text_skill = time.time() - chasi
 text_skill = int(text)
 text_skill = str(text)
-text2_skill = sprite.add_text(text, 1055, 30)
+text2_skill = sprite.add_text(text, 300, 300)
 
 
 @wrap.on_key_always(wrap.K_RIGHT, delay=15)
@@ -113,7 +113,11 @@ def taimer():
 
 @wrap.always
 def taimer_skill():
-    pass
+    text_skill = time.time() - chasi_skill
+    ostaloci = 20 - text_skill
+    ostaloci = int(ostaloci)
+    ostaloci = str(ostaloci)
+    sprite_text.set_text(text2_skill, ostaloci)
 
 # Нужен таймер в обратную сторону
 # №1 Таймер который ведёт обратный отсчет от 20 до 0.
@@ -125,4 +129,3 @@ def taimer_skill():
 # Таймер ведёт отсчёт от 20 до 0
 ##Событие Таймер досчитал до цифры 0
 # Таймер стоит
-
