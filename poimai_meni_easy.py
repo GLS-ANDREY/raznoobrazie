@@ -114,13 +114,18 @@ def taimer():
 @wrap.always
 def taimer_skill():
     text_skill = time.time() - chasi_skill
-    ostaloci = 20 - text_skill
+    ostaloci = 21 - text_skill
     ostaloci = int(ostaloci)
     ostaloci = str(ostaloci)
     sprite_text.set_text(text2_skill, ostaloci)
 
+@wrap.on_key_down(wrap.K_6)
+def stop_taimer():
+    pass
+
+
 # Нужен таймер в обратную сторону
-# №1 Таймер который ведёт обратный отсчет от 20 до 0.
+# №1 Таймер который ведёт обратный отсчет от 20 до 0. #Сделано
 # №2 Отсчёт должен начинаться когда Фантом вышел из невидимости.
 
 ###Состояния таймера
