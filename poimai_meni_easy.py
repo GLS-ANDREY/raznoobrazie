@@ -8,6 +8,7 @@ world.create_world(1200, 650)
 fon_sprite = sprite.add("fon", 700, 325, "fon_pacman2")
 sprite.set_width_proportionally(fon_sprite, 1400)
 vremi = time.time()
+stop = 21
 
 # Cоздаем пакмена
 pacman = sprite.add("pacman", 100, 325, "player2")
@@ -121,7 +122,7 @@ def taimer_skill():
 
 @wrap.on_key_down(wrap.K_6)
 def stop_taimer():
-    pass
+    global stop
 
 
 # Нужен таймер в обратную сторону
