@@ -115,18 +115,16 @@ def taimer():
 
 @wrap.always
 def taimer_skill():
+    global stop
+    text_skill = time.time() - chasi_skill
     if True == stop:
-        text_skill = time.time() - chasi_skill
         ostaloci = 16 - text_skill
         ostaloci = int(ostaloci)
         ostaloci = str(ostaloci)
         sprite_text.set_text(text2_skill, ostaloci)
+    if text_skill > 16:
+        stop = False
 
-
-@wrap.on_key_down(wrap.K_t)
-def stop_taimer():
-    global stop
-    stop = False
 
 # Нужен таймер в обратную сторону
 # №1 Таймер который ведёт обратный отсчет от 20 до 0. #Сделано
