@@ -35,7 +35,7 @@ chasi_skill = time.time()
 text_skill = time.time() - chasi
 text_skill = int(text)
 text_skill = str(text)
-text2_skill = sprite.add_text(text, 300, 300)
+text2_skill = sprite.add_text(text, 570, 630, text_color=[125,30,151], font_size=25,bold=True)
 
 
 @wrap.on_key_always(wrap.K_RIGHT, delay=15)
@@ -58,8 +58,8 @@ def top_stop():
 
 def bottom_stop():
     bottom_fantom = sprite.get_bottom(fantom)
-    if bottom_fantom > 650:
-        sprite.move_bottom_to(fantom, 650)
+    if bottom_fantom > 605:
+        sprite.move_bottom_to(fantom, 605)
 
 
 def left_stop():
@@ -99,10 +99,14 @@ def invisible_true():
 
 @wrap.always
 def proverka_invisible():
+    global stop
+    global chasi_skill
     if sprite.get_costume(fantom) == "enemy_inv":
         time_invisible = time.time() - vremi
         if time_invisible > 3.0:
             sprite.set_costume(fantom, "enemy_ill_blue1")  # <- Фантом выходит из невидимости
+            chasi_skill = time.time()
+            stop = True
 
 
 @wrap.always
@@ -118,17 +122,12 @@ def taimer_skill():
     global stop
     text_skill = time.time() - chasi_skill
     if True == stop:
-        ostaloci = 16 - text_skill
+        ostaloci = 13 - text_skill
         ostaloci = int(ostaloci)
         ostaloci = str(ostaloci)
         sprite_text.set_text(text2_skill, ostaloci)
-    # if text_skill > 16:
-    #     stop = False
-
-@wrap.on_key_down(wrap.K_5)
-def stop_taimer():
-    global stop
-    stop = True
+    if text_skill > 13:
+        stop = False
 
 # Нужен таймер в обратную сторону
 # №1 Таймер который ведёт обратный отсчет от 20 до 0. #Сделано
