@@ -9,6 +9,7 @@ fon_sprite = sprite.add("fon", 700, 325, "fon_pacman2")
 sprite.set_width_proportionally(fon_sprite, 1400)
 vremi = time.time()
 stop = False
+sprite.add_text("T = invisible",45,10,font_size=17)
 
 # Cоздаем пакмена
 pacman = sprite.add("pacman", 100, 325, "player2")
@@ -32,10 +33,8 @@ text2 = sprite.add_text(text, 1055, 30)
 
 # Делаем таймер для способности
 chasi_skill = time.time()
-text_skill = time.time() - chasi
-text_skill = int(text)
-text_skill = str(text)
-text2_skill = sprite.add_text(text, 570, 630, text_color=[125,30,151], font_size=25,bold=True)
+global text_skill
+text2_skill = sprite.add_text(text, 570, 630, font_size=25, bold=True)  # , text_color=[125, 30, 151])
 
 
 @wrap.on_key_always(wrap.K_RIGHT, delay=15)
@@ -92,9 +91,12 @@ def move_pacman():
 
 @wrap.on_key_down(wrap.K_t)
 def invisible_true():
+    global text_skill
     global vremi
-    sprite.set_costume(fantom, "enemy_inv")
-    vremi = time.time()
+    costume_fantom = sprite.get_costume(fantom)
+    if stop == False and costume_fantom == "enemy_ill_blue1":
+            sprite.set_costume(fantom, "enemy_inv")
+            vremi = time.time()
 
 
 @wrap.always
@@ -119,15 +121,17 @@ def taimer():
 
 @wrap.always
 def taimer_skill():
+    global text_skill
     global stop
     text_skill = time.time() - chasi_skill
     if True == stop:
-        ostaloci = 13 - text_skill
+        ostaloci = 16 - text_skill
         ostaloci = int(ostaloci)
         ostaloci = str(ostaloci)
         sprite_text.set_text(text2_skill, ostaloci)
-    if text_skill > 13:
+    if text_skill > 16:
         stop = False
+    print(stop)
 
 # Нужен таймер в обратную сторону
 # №1 Таймер который ведёт обратный отсчет от 20 до 0. #Сделано
