@@ -32,15 +32,18 @@ text = str(text)
 text2 = sprite.add_text(text, 1055, 30)
 
 # Создаем глаза для скилла
-glaza = sprite.add("privedenie", 570, 625, "enemy_inv")
+glaza = sprite.add("privedenie", 570, 635, "enemy_inv", False)
 
 # Создаем фон для скилла
 fon_black_skill = sprite.add("fon", 570, 630, "skill_fon_fake")
 
+# Создаем обводку
+border_white_skill = sprite.add("fon", 570, 627, "white_square")
+
 # Делаем таймер для cкилла
 chasi_skill = time.time()
 global text_skill
-text2_skill = sprite.add_text(text, 570, 630, font_size=25, bold=True, text_color=[99, 26, 121])
+text2_skill = sprite.add_text(text, 570, 627, font_size=25, bold=True, text_color=[99, 26, 121])
 
 
 @wrap.on_key_always(wrap.K_RIGHT, delay=15)
@@ -117,6 +120,20 @@ def proverka_invisible():
             stop = True
 
 
+@wrap.on_key_down(wrap.K_1)
+def vid_taymera_dostupen():
+    sprite.hide(fon_black_skill)
+    sprite.hide(text2_skill)
+    sprite.show(glaza)
+
+
+@wrap.on_key_down(wrap.K_2)
+def vid_taymera_nedostupen():
+    sprite.hide(glaza)
+    sprite.show(fon_black_skill)
+    sprite.show(text2_skill)
+
+
 @wrap.always
 def taimer():
     text = time.time() - chasi
@@ -137,14 +154,3 @@ def taimer_skill():
         sprite_text.set_text(text2_skill, ostaloci)
     if text_skill > 16:
         stop = False
-
-# Нужен таймер в обратную сторону
-# №1 Таймер который ведёт обратный отсчет от 20 до 0. #Сделано
-# №2 Отсчёт должен начинаться когда Фантом вышел из невидимости.
-
-###Состояния таймера
-# Таймер в начале стоит на месте.
-##Собятие Фантои вышел из невидимости
-# Таймер ведёт отсчёт от 20 до 0
-##Событие Таймер досчитал до цифры 0
-# Таймер стоит
