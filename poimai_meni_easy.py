@@ -22,7 +22,7 @@ sprite.set_size(fantom, 40, 40)
 # Создаем сердца
 life_fantom1 = sprite.add("heart", 1170, 30)
 life_fantom2 = sprite.add("heart", 1130, 30)
-life_fantom3 = sprite.add("heart", 1090, 30)
+life_fantom3 = sprite.add("heart", 1090, 30,"void_heart")
 
 # Делаем таймер
 chasi = time.time()
@@ -32,30 +32,17 @@ text = str(text)
 text2 = sprite.add_text(text, 1055, 30)
 
 # Создаем глаза для скилла
-glaza = sprite.add("privedenie", 570, 635, "enemy_inv", False)
+glaza = sprite.add("privedenie", 570, 635, "enemy_inv")
 
 # Создаем фон для скилла
-fon_black_skill = sprite.add("fon", 570, 630, "skill_fon_fake")
+fon_black_skill = sprite.add("fon", 570, 630, "skill_fon_fake",False)
 
 # Создаем обводку
 border_white_skill = sprite.add("fon", 570, 627, "white_square")
 
 # Делаем таймер для cкилла
 chasi_skill = time.time()
-global text_skill
-text2_skill = sprite.add_text(text, 570, 627, font_size=25, bold=True, text_color=[99, 26, 121])
-
-
-@wrap.on_key_always(wrap.K_RIGHT, delay=15)
-def povorot_right():
-    get_pacman = sprite.get_angle(pacman)
-    sprite.set_angle(pacman, get_pacman + 10)
-
-
-@wrap.on_key_always(wrap.K_LEFT, delay=15)
-def povorot_left():
-    get_pacman = sprite.get_angle(pacman)
-    sprite.set_angle(pacman, get_pacman - 10)
+text2_skill = sprite.add_text(text, 570, 627, font_size=25, bold=True, text_color=[99, 26, 121],visible=False)
 
 
 def top_stop():
@@ -100,11 +87,10 @@ def move_pacman():
 
 @wrap.on_key_down(wrap.K_t)
 def invisible_true():
-    global text_skill
     global vremi
     costume_fantom = sprite.get_costume(fantom)
     if stop == False and costume_fantom == "enemy_ill_blue1":
-        sprite.set_costume(fantom, "enemy_inv")
+        sprite.set_costume(fantom, "enemy_inv")  # <- Заходит в невидимость
         vremi = time.time()
 
 
@@ -116,22 +102,22 @@ def proverka_invisible():
         time_invisible = time.time() - vremi
         if time_invisible > 3.0:
             sprite.set_costume(fantom, "enemy_ill_blue1")  # <- Фантом выходит из невидимости
+            vid_taymera_nedostupen()
             chasi_skill = time.time()
             stop = True
 
 
-@wrap.on_key_down(wrap.K_1)
 def vid_taymera_dostupen():
     sprite.hide(fon_black_skill)
     sprite.hide(text2_skill)
     sprite.show(glaza)
 
 
-@wrap.on_key_down(wrap.K_2)
 def vid_taymera_nedostupen():
     sprite.hide(glaza)
     sprite.show(fon_black_skill)
     sprite.show(text2_skill)
+
 
 
 @wrap.always
@@ -154,3 +140,4 @@ def taimer_skill():
         sprite_text.set_text(text2_skill, ostaloci)
     if text_skill > 16:
         stop = False
+        vid_taymera_dostupen()
