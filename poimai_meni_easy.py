@@ -71,19 +71,21 @@ def right_stop():
 
 @wrap.always(10)
 def move_prizrak(pos_x, pos_y):
-    sprite.move_at_angle_point(fantom, pos_x, pos_y, 4)
+    if sprite.get_costume(fantom) == "enemy_inv":
+        sprite.move_at_angle_point(fantom, pos_x, pos_y, 7)
+    if sprite.get_costume(fantom) == "enemy_ill_blue1":
+        sprite.move_at_angle_point(fantom, pos_x, pos_y, 6)
     top_stop()
     bottom_stop()
     left_stop()
     right_stop()
 
 
-@wrap.always(50)
+@wrap.always(40)
 def move_pacman():
-    if sprite.get_costume(fantom) == "enemy_ill_blue1":
+    if sprite.get_costume(fantom) == "enemy_ill_blue1" or sprite.get_costume(fantom) == "enemy_ill_white1":
         sprite.move_at_angle_dir(pacman, 12)
         sprite.set_angle_to_point(pacman, sprite.get_x(fantom), sprite.get_y(fantom))
-
 
 @wrap.on_key_down(wrap.K_t)
 def invisible_true():
@@ -119,7 +121,6 @@ def vid_taymera_nedostupen():
     sprite.show(text2_skill)
 
 
-
 @wrap.always
 def taimer():
     text = time.time() - chasi
@@ -141,3 +142,7 @@ def taimer_skill():
     if text_skill > 16:
         stop = False
         vid_taymera_dostupen()
+@wrap.always
+def lose():
+    if sprite.is_collide_sprite(fantom,pacman):
+        sprite.set_costume(fantom,"enemy_ill_white1")
