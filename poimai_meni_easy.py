@@ -9,6 +9,7 @@ fon_sprite = sprite.add("fon", 700, 325, "fon_pacman2")
 sprite.set_width_proportionally(fon_sprite, 1400)
 vremi = time.time()
 stop = False
+fantom_state = "normal"
 sprite.add_text("T = invisible", 45, 10, font_size=17)
 
 # Cоздаем пакмена
@@ -22,7 +23,7 @@ sprite.set_size(fantom, 40, 40)
 # Создаем сердца
 life_fantom1 = sprite.add("heart", 1170, 30)
 life_fantom2 = sprite.add("heart", 1130, 30)
-life_fantom3 = sprite.add("heart", 1090, 30,"void_heart")
+life_fantom3 = sprite.add("heart", 1090, 30, "void_heart")
 
 # Делаем таймер
 chasi = time.time()
@@ -35,14 +36,18 @@ text2 = sprite.add_text(text, 1055, 30)
 glaza = sprite.add("privedenie", 570, 635, "enemy_inv")
 
 # Создаем фон для скилла
-fon_black_skill = sprite.add("fon", 570, 630, "skill_fon_fake",False)
+fon_black_skill = sprite.add("fon", 570, 630, "skill_fon_fake", False)
 
 # Создаем обводку
 border_white_skill = sprite.add("fon", 570, 627, "white_square")
 
 # Делаем таймер для cкилла
 chasi_skill = time.time()
-text2_skill = sprite.add_text(text, 570, 627, font_size=25, bold=True, text_color=[99, 26, 121],visible=False)
+text2_skill = sprite.add_text(text, 570, 627, font_size=25, bold=True, text_color=[99, 26, 121], visible=False)
+
+
+# cоздаем текст для стат
+text_state = sprite.add_text("Normal", 600, 13, font_size=17)
 
 
 def top_stop():
@@ -71,10 +76,10 @@ def right_stop():
 
 @wrap.always(10)
 def move_prizrak(pos_x, pos_y):
-    if sprite.get_costume(fantom) == "enemy_inv":
-        sprite.move_at_angle_point(fantom, pos_x, pos_y, 7)
-    if sprite.get_costume(fantom) == "enemy_ill_blue1":
-        sprite.move_at_angle_point(fantom, pos_x, pos_y, 6)
+    if fantom_state == "invisible":
+        sprite.move_at_angle_point(fantom, pos_x, pos_y, 10)
+    if fantom_state == "normal" or fantom_state == "immortal":
+        sprite.move_at_angle_point(fantom, pos_x, pos_y, 10)
     top_stop()
     bottom_stop()
     left_stop()
@@ -83,16 +88,16 @@ def move_prizrak(pos_x, pos_y):
 
 @wrap.always(40)
 def move_pacman():
-    if sprite.get_costume(fantom) == "enemy_ill_blue1" or sprite.get_costume(fantom) == "enemy_ill_white1":
+    if fantom_state == "normal" or fantom_state == "immortal":
         sprite.move_at_angle_dir(pacman, 12)
         sprite.set_angle_to_point(pacman, sprite.get_x(fantom), sprite.get_y(fantom))
+
 
 @wrap.on_key_down(wrap.K_t)
 def invisible_true():
     global vremi
-    costume_fantom = sprite.get_costume(fantom)
-    if stop == False and costume_fantom == "enemy_ill_blue1":
-        sprite.set_costume(fantom, "enemy_inv")  # <- Заходит в невидимость
+    if stop == False and fantom_state == "normal":
+        state_invisible()  # <- Заходит в невидимость
         vremi = time.time()
 
 
@@ -100,10 +105,10 @@ def invisible_true():
 def proverka_invisible():
     global stop
     global chasi_skill
-    if sprite.get_costume(fantom) == "enemy_inv":
+    if fantom_state == "invisible":
         time_invisible = time.time() - vremi
         if time_invisible > 3.0:
-            sprite.set_costume(fantom, "enemy_ill_blue1")  # <- Фантом выходит из невидимости
+            state_normal()  # <- Фантом выходит из невидимости
             vid_taymera_nedostupen()
             chasi_skill = time.time()
             stop = True
@@ -142,7 +147,29 @@ def taimer_skill():
     if text_skill > 16:
         stop = False
         vid_taymera_dostupen()
+
+
 @wrap.always
 def lose():
-    if sprite.is_collide_sprite(fantom,pacman):
-        sprite.set_costume(fantom,"enemy_ill_white1")
+    if sprite.is_collide_sprite(fantom, pacman):
+        state_immortal()
+
+
+def state_normal():
+    global fantom_state
+    sprite.set_costume(fantom, "enemy_ill_blue1")
+    fantom_state = "normal"
+    sprite_text.set_text(text_state, "Normal")
+
+
+def state_invisible():
+    global fantom_state
+    sprite.set_costume(fantom, "enemy_inv")
+    fantom_state = "invisible"
+    sprite_text.set_text(text_state, "Invisible")
+
+def state_immortal():
+    global fantom_state
+    sprite.set_costume(fantom, "enemy_ill_white1")
+    fantom_state = "immortal"
+    sprite_text.set_text(text_state, "Immortal")
