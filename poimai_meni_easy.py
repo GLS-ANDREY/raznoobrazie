@@ -7,7 +7,8 @@ wrap.add_sprite_dir("my_sprite")
 world.create_world(1200, 650)
 fon_sprite = sprite.add("fon", 700, 325, "fon_pacman2")
 sprite.set_width_proportionally(fon_sprite, 1400)
-vremi = time.time()
+vremi_invisible = time.time()
+vremi_immortal = time.time()
 stop = False
 fantom_state = "normal"
 sprite.add_text("T = invisible", 45, 10, font_size=17)
@@ -95,10 +96,10 @@ def move_pacman():
 
 @wrap.on_key_down(wrap.K_t)
 def invisible_true():
-    global vremi
+    global vremi_invisible
     if stop == False and fantom_state == "normal":
         state_invisible()  # <- Заходит в невидимость
-        vremi = time.time()
+        vremi_invisible = time.time()
 
 
 @wrap.always
@@ -106,13 +107,12 @@ def proverka_invisible():
     global stop
     global chasi_skill
     if fantom_state == "invisible":
-        time_invisible = time.time() - vremi
+        time_invisible = time.time() - vremi_invisible
         if time_invisible > 3.0:
             state_normal()  # <- Фантом выходит из невидимости
             vid_taymera_nedostupen()
             chasi_skill = time.time()
             stop = True
-
 
 def vid_taymera_dostupen():
     sprite.hide(fon_black_skill)
@@ -151,8 +151,14 @@ def taimer_skill():
 
 @wrap.always
 def lose():
+    global vremi_immortal
     if sprite.is_collide_sprite(fantom, pacman):
         state_immortal()
+        vremi_immortal = time.time()
+    if fantom_state == "immortal":
+        time_immortal = time.time() - vremi_immortal
+        if time_immortal > 3.0:
+            state_normal()
 
 
 def state_normal():
