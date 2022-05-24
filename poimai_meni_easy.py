@@ -21,17 +21,13 @@ sprite.set_size(pacman, 50, 50)
 fantom = sprite.add("privedenie", 1100, 325, "enemy_ill_blue1")
 sprite.set_size(fantom, 40, 40)
 
-# Создаем сердца
-life_fantom1 = sprite.add("heart", 1170, 30)
-life_fantom2 = sprite.add("heart", 1130, 30)
-life_fantom3 = sprite.add("heart", 1090, 30, "void_heart")
 
 # Делаем таймер
 chasi = time.time()
 text = time.time() - chasi
 text = int(text)
 text = str(text)
-text2 = sprite.add_text(text, 1055, 30)
+text2 = sprite.add_text(text, 1140, 30)
 
 # Создаем глаза для скилла
 glaza = sprite.add("privedenie", 570, 635, "enemy_inv")
@@ -47,7 +43,7 @@ chasi_skill = time.time()
 text2_skill = sprite.add_text(text, 570, 627, font_size=25, bold=True, text_color=[99, 26, 121], visible=False)
 
 
-# cоздаем текст для стат
+# Cоздаем текст для стат
 text_state = sprite.add_text("Normal", 600, 13, font_size=17)
 
 
@@ -78,9 +74,9 @@ def right_stop():
 @wrap.always(10)
 def move_prizrak(pos_x, pos_y):
     if fantom_state == "invisible":
-        sprite.move_at_angle_point(fantom, pos_x, pos_y, 10)
+        sprite.move_at_angle_point(fantom, pos_x, pos_y, 8)
     if fantom_state == "normal" or fantom_state == "immortal":
-        sprite.move_at_angle_point(fantom, pos_x, pos_y, 10)
+        sprite.move_at_angle_point(fantom, pos_x, pos_y, 6)
     top_stop()
     bottom_stop()
     left_stop()
@@ -113,6 +109,7 @@ def proverka_invisible():
             vid_taymera_nedostupen()
             chasi_skill = time.time()
             stop = True
+
 
 def vid_taymera_dostupen():
     sprite.hide(fon_black_skill)
@@ -151,8 +148,12 @@ def taimer_skill():
 
 @wrap.always
 def lose():
-    global vremi_immortal
+    global chasi_skill , stop , vremi_immortal
     if sprite.is_collide_sprite(fantom, pacman):
+        if fantom_state == "invisible":
+            vid_taymera_nedostupen()
+            chasi_skill = time.time()
+            stop = True
         state_immortal()
         vremi_immortal = time.time()
     if fantom_state == "immortal":
@@ -173,6 +174,7 @@ def state_invisible():
     sprite.set_costume(fantom, "enemy_inv")
     fantom_state = "invisible"
     sprite_text.set_text(text_state, "Invisible")
+
 
 def state_immortal():
     global fantom_state
